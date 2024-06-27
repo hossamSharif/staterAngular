@@ -1,0 +1,93 @@
+<ion-app>
+  <!-- <ion-split-pane contentId="side" > -->
+    <ion-menu contentId="side" type="overlay" *ngIf="isAuth == true">
+      <ion-content>
+        <ion-list id="inbox-list">
+          <ion-list-header>Erp Dashoard</ion-list-header>
+          <!-- <ion-label class="ion-margin"><strong>فرع : </strong> <ion-text>{{store_info.store_name}}</ion-text></ion-label> -->
+          <ion-grid>
+            <ion-row class="ion-justify-content-center"> 
+              <ion-col size="12" class="ion-padding-top">
+                <!-- <ion-label>المستخدم : </ion-label> -->
+                <ion-label>Admin : <strong>{{USER_INFO.full_name}}</strong> </ion-label>
+              </ion-col>
+              <ion-col size="12">
+                <ion-button fill="clear" color="danger" (click)="logOut()">
+                  <ion-icon name="lock-closed-outline" color="danger"  slot="end"></ion-icon>
+                   log out
+                </ion-button>
+              </ion-col>
+            </ion-row> 
+            <!-- <ion-item lines="none">
+              dark
+              <ion-toggle (ionChange)="onClick($event)" slot="end"></ion-toggle>
+            </ion-item> -->
+            <!-- <ion-row>
+              <ion-item lines="none">
+                <ion-toggle (ionChange)="onClick($event)" slot="end"></ion-toggle>
+              </ion-item>
+
+              <ion-item lines="none">
+                <ion-checkbox (ionChange)="checkhange($event)" slot="end" value="gr"></ion-checkbox>
+              </ion-item>
+            </ion-row> -->
+          </ion-grid>
+          <ion-item-divider></ion-item-divider>
+           <ion-menu-toggle auto-hide="false" class="ion-margin-top">  
+                <ion-item routerDirection="root"  routerLink="folder/home"  lines="none" detail="false" routerLinkActive="selected">
+                    <ion-icon class="ico" color="primary"   name="home-outline"></ion-icon> 
+                  <ion-label class="ion-margin-start"><strong>Home</strong> </ion-label>
+                </ion-item> 
+          </ion-menu-toggle> 
+
+          <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
+            <ion-item routerDirection="root" routerLink="folder/pos-sales" lines="none" detail="false" routerLinkActive="selected">             
+            <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> POS  </ion-label>
+            </ion-item>   
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
+            <ion-item routerDirection="root" routerLink="folder/stock-mng" lines="none" detail="false" routerLinkActive="selected">             
+            <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> Stocks Mng </ion-label>
+            </ion-item>   
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" > 
+            <ion-item routerDirection="root"  routerLink="folder/accounts-mng" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon class="ico" color="primary" name="cash-outline"></ion-icon> 
+              <ion-label class="ion-margin-start">  Accounts Mng </ion-label>
+           </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" >
+          <ion-item routerDirection="root"  routerLink="folder/reports" lines="none" detail="false" routerLinkActive="selected"> 
+            <ion-icon class="ico" color="primary"   name="reader-outline"></ion-icon> 
+            <ion-label class="ion-margin-start">Reports  </ion-label>
+          </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" > 
+            <ion-item routerDirection="root"  routerLink="folder/finance" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon class="ico" color="primary" name="cash-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> Finance Reports  </ion-label>
+           </ion-item>
+           </ion-menu-toggle>
+          
+          <ion-menu-toggle auto-hide="false" >
+            <ion-item routerDirection="root" lines="none" detail="false" routerDirection="root" lines="none"   routerLink="folder/users" detail="false" routerLinkActive="selected">
+              <ion-icon class="ico" color="primary"  name="people-circle-outline"></ion-icon> 
+              <ion-label class="ion-margin-start">Users</ion-label>
+            </ion-item> 
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" > 
+             <ion-item routerDirection="root" lines="none"   routerLink="folder/settings" detail="false" routerLinkActive="selected">
+            
+              <ion-icon class="ico" color="primary" name="cog-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> Settings</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list> 
+      </ion-content> 
+    </ion-menu>
+     <ion-router-outlet id="side" *ngIf="isAuth == true"></ion-router-outlet>
+  <!-- </ion-split-pane> -->
+  <ion-router-outlet *ngIf="isAuth == false"></ion-router-outlet>
+</ion-app>
