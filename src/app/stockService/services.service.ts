@@ -82,13 +82,11 @@ import { Storage } from '@ionic/storage';
     return this.http.get(this.api+'items/truncateItems.php')
   }
 
-  // stockItems(store_id , yearId){ 
-  //   let params = new HttpParams() 
-  //   params=params.append('store_id' , store_id) 
-  //   params=params.append('yearId' , yearId)
-
-  //   return this.http.get(this.api+'items/readStock.php',{params: params})
-  // }
+  stockItemsResturant(store_id ){ 
+    let params = new HttpParams() 
+    params=params.append('store_id' , store_id)   
+    return this.http.get(this.api+'items/readStockResturant.php',{params: params})
+  }
 
    stockItems(store_id , yearId){ 
     let params = new HttpParams() 
@@ -126,7 +124,20 @@ import { Storage } from '@ionic/storage';
     params=params.append('yearId' , yearId)
     return this.http.get(this.api+'pay/getTopSales.php',{params: params})
   }
+  getTopDiscount(store_id,yearId){ 
+    let params = new HttpParams() 
+    params=params.append('store_id' , store_id)
+    params=params.append('yearId' , yearId)
+    return this.http.get(this.api+'discount/getTopSales.php',{params: params})
+  }
 
+  getSalesById(store_id,yearId,pay_id){ 
+    let params = new HttpParams() 
+    params=params.append('store_id' , store_id)
+    params=params.append('yearId' , yearId) 
+    params=params.append('pay_id' , pay_id)
+    return this.http.get(this.api+'pay/getSalesById.php',{params: params})
+  }
   
   getTopSalesInit(store_id){ 
     let params = new HttpParams() 
@@ -596,6 +607,12 @@ getTswiaByDate(store_id,from ,yearId){
      payInvo
      )
   }
+
+    saveDiscountInvo(payInvo){
+    return this.http.post(this.api+'discount/create.php', 
+     payInvo
+     )
+  }
   saveSalesInvoInit(payInvo){
     return this.http.post(this.api+'payinit/create.php', 
      payInvo
@@ -628,8 +645,24 @@ getTswiaByDate(store_id,from ,yearId){
     // with formData as req
     return this.http.post(this.api+'uploadXsl.php', formData)
 }
- 
+uploadImg(file):Observable<any> {
+  
+  // Create form data
+  const formData = new FormData(); 
+    
+  // Store form name as "file" with file data
+  formData.append("file", file, file.name);
+    
+  // Make http post request over api
+  // with formData as req
+  return this.http.post(this.api+'upload.php', formData)
+}
 
+
+uploadFile(data){
+  let uploadURL = this.api+`upload.php`;
+    return this.http.post<any>(uploadURL, data);
+}
   saveExpenseInvo(payInvo){
     return this.http.post(this.api+'invoices/create.php', 
      payInvo
@@ -866,7 +899,12 @@ getTswiaByDate(store_id,from ,yearId){
       itemList
     )
   }
-
+ saveDiscountitemList(itemList){
+    itemList= JSON.stringify(itemList) 
+    return this.http.post(this.api+'discount_details/createMulti.php',
+      itemList
+    )
+  }
 
 
   saveSalesitemListInit(itemList){

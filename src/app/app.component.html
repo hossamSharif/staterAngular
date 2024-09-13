@@ -39,37 +39,73 @@
                   <ion-label class="ion-margin-start"><strong>Home</strong> </ion-label>
                 </ion-item> 
           </ion-menu-toggle> 
-
           <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
             <ion-item routerDirection="root" routerLink="folder/pos-sales" lines="none" detail="false" routerLinkActive="selected">             
             <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
-              <ion-label class="ion-margin-start"> POS  </ion-label>
+              <ion-label class="ion-margin-start"> Sales   </ion-label>
             </ion-item>   
           </ion-menu-toggle>
           <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
-            <ion-item routerDirection="root" routerLink="folder/stock-mng" lines="none" detail="false" routerLinkActive="selected">             
+            <ion-item routerDirection="root" routerLink="folder/sales-record" lines="none" detail="false" routerLinkActive="selected">             
             <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
-              <ion-label class="ion-margin-start"> Stocks Mng </ion-label>
+              <ion-label class="ion-margin-start"> Sales record  </ion-label>
             </ion-item>   
           </ion-menu-toggle>
-          <ion-menu-toggle auto-hide="false" > 
+          <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
+            <ion-item routerDirection="root" routerLink="folder/items" lines="none" detail="false" routerLinkActive="selected">             
+            <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> Items Mng </ion-label>
+            </ion-item>   
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
+            <ion-item routerDirection="root" routerLink="folder/discount" lines="none" detail="false" routerLinkActive="selected">             
+            <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> Discount System </ion-label>
+            </ion-item>   
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
+            <ion-item routerDirection="root" routerLink="folder/discount-record" lines="none" detail="false" routerLinkActive="selected">             
+            <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> Discount Records </ion-label>
+            </ion-item>   
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
+            <ion-item routerDirection="root" routerLink="folder/cash3" lines="none" detail="false" routerLinkActive="selected">             
+            <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> Expences  </ion-label>
+            </ion-item>   
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" class="ion-margin-top"> 
+            <ion-item routerDirection="root" routerLink="folder/spend-record2" lines="none" detail="false" routerLinkActive="selected">             
+            <ion-icon class="ico" color="primary"   name="file-tray-outline"></ion-icon> 
+              <ion-label class="ion-margin-start"> Expences recordS  </ion-label>
+            </ion-item>   
+          </ion-menu-toggle>
+
+
+     
+         
+       
+
+          <!-- <ion-menu-toggle auto-hide="false" > 
             <ion-item routerDirection="root"  routerLink="folder/accounts-mng" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon class="ico" color="primary" name="cash-outline"></ion-icon> 
               <ion-label class="ion-margin-start">  Accounts Mng </ion-label>
            </ion-item>
-          </ion-menu-toggle>
+          </ion-menu-toggle> -->
           <ion-menu-toggle auto-hide="false" >
           <ion-item routerDirection="root"  routerLink="folder/reports" lines="none" detail="false" routerLinkActive="selected"> 
             <ion-icon class="ico" color="primary"   name="reader-outline"></ion-icon> 
             <ion-label class="ion-margin-start">Reports  </ion-label>
           </ion-item>
           </ion-menu-toggle>
-          <ion-menu-toggle auto-hide="false" > 
+          <!-- <ion-menu-toggle auto-hide="false" > 
             <ion-item routerDirection="root"  routerLink="folder/finance" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon class="ico" color="primary" name="cash-outline"></ion-icon> 
               <ion-label class="ion-margin-start"> Finance Reports  </ion-label>
            </ion-item>
-           </ion-menu-toggle>
+           </ion-menu-toggle> -->
           
           <ion-menu-toggle auto-hide="false" >
             <ion-item routerDirection="root" lines="none" detail="false" routerDirection="root" lines="none"   routerLink="folder/users" detail="false" routerLinkActive="selected">
@@ -79,7 +115,6 @@
           </ion-menu-toggle>
           <ion-menu-toggle auto-hide="false" > 
              <ion-item routerDirection="root" lines="none"   routerLink="folder/settings" detail="false" routerLinkActive="selected">
-            
               <ion-icon class="ico" color="primary" name="cog-outline"></ion-icon> 
               <ion-label class="ion-margin-start"> Settings</ion-label>
             </ion-item>

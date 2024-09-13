@@ -7,14 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { PrintModalPageRoutingModule } from './print-modal-routing.module';
 
 import { PrintModalPage } from './print-modal.page';
-//import { QRCodeModule } from 'angularx-qrcode';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-   // QRCodeModule,
+   QRCodeModule,
     PrintModalPageRoutingModule
   ],
   declarations: [PrintModalPage]

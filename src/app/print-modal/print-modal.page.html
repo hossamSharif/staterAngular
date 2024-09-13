@@ -135,6 +135,12 @@
 	
 } -->
 <ion-content  style="max-width : 30px">
+
+    <div style="display: none;">
+      <qrcode [qrdata]="qrcodedata" size="256" level="'M'"></qrcode> 
+    </div>
+
+  
   <div class="ion-padding receipt-container" >
       <div   #printarea1  id="printarea1" >
         <div  > <img alt=""  [src]="printArr[0].company.logoUrl" style="display : block ; margin-left: auto ;margin-right: auto ; width:100px;height:100px"> </div>
@@ -150,8 +156,9 @@
           </div> 
         </div> -->
 
-        <h3 class="ion-text-center" *ngIf="page=='sales' || page=='sales_record' || page=='pos-sales'"> فاتورة ضريبية مبسطة  </h3> 
-        <h3 class="ion-text-center" *ngIf="page=='sales' || page=='sales_record' || page=='pos-sales'"> simple vat invoice </h3> 
+        <h4 class="ion-text-center" *ngIf="page=='sales' || page=='sales_record' || page=='pos-sales'"> فاتورة ضريبية مبسطة  </h4> 
+        <h4 class="ion-text-center" *ngIf="page=='sales' || page=='sales_record' || page=='pos-sales'"> simple vat invoice </h4> 
+        <h4 class="ion-text-center" *ngIf="page=='sales' || page=='sales_record' || page=='pos-sales'"> رقم الفاتورة  <ion-text>{{printArr[0].payInvo.pay_id}}</ion-text> </h4> 
 
         <div class="ion-margin-top rtl"  *ngIf="printArr && page!='perchOrderEn' && page!='perchOrderAr' && page!='perchOrderAr-record'  && page!='perchOrderEn-record'">
           <div class="w100 rtl" style="display:inline-block ; margin-right: 16px"> 
@@ -189,7 +196,7 @@
                 <th class="th" style="border-bottom: .5px solid #dddddd ;">الصنف  item</th>
                 <th class="th" style="border-bottom: .5px solid #dddddd ;">الكمية  QTY</th> 
                 <th class="th" style="border-bottom: .5px solid #dddddd ;">سعر  unit price </th> 
-                <th class="th" style="border-bottom: .5px solid #dddddd ;">نسبة الضريبة   VAT%</th> 
+                <th class="th" style="border-bottom: .5px solid #dddddd ;">نسبة الضريبة   VAT</th> 
                 <th class="th" style="border-bottom: .5px solid #dddddd ;">الخصم   discount</th> 
                 <!-- <th class="th" style="border-bottom: .5px solid #dddddd ;">قيمة الضريبة   VAT</th>  -->
                 <th class="th" style="border-bottom: .5px solid #dddddd ;">   صافي القيمة  total</th>
@@ -197,7 +204,7 @@
                 <tr *ngFor="let item of printArr[0].itemList ; let i = index"> 
                   <td class="td" style="border: none;">{{item.item_name}}</td>
                   <td class="td"  style="border: none;"> {{item.quantity}}</td>
-                  <td class="td" style="border: none;">{{+item.pay_price + (+item.tax/100 * +item.pay_price)}}</td>
+                  <td class="td" style="border: none;">{{+item.pay_price }}</td>
                   <td  class="td" style="border: none;">  {{item.tax}} </td> 
                   <td  class="td" style="border: none;">  {{item.discount}} </td>  
                   <td  class="td" style="border: none;">  {{item.tot}} </td> 
@@ -208,7 +215,7 @@
                   <td  class="td2"></td>
                   <td  class="td2"></td>
                   <td  class="td2"></td>
-                  <td class="td2" >{{+printArr[0].payInvo.tot_pr +  +printArr[0].payInvo.taxTot }}</td>
+                  <td class="td2" >{{+printArr[0].payInvo.tot_pr - +printArr[0].payInvo.discountTot  +  +printArr[0].payInvo.taxTot }}</td>
                 </tr>
               </table> 
               </div> 
@@ -233,6 +240,14 @@
               </div> -->
               <div  class="w100 rtl" style="display:inline-block ;margin-right: 16px;">
                 <div class="rtl ion-text-center" style=" width:20% ;text-align: center;padding: 8px; position: relative; float: right;">
+                  <ion-label> تخفيض   / discount </ion-label>
+                </div>
+                <div class="rtl ion-text-center "  style="font-weight: bold;text-align: center;padding: 8px; position: relative; float: right;">
+                  <ion-label>  {{printArr[0].payInvo.discountTot}} </ion-label>
+                </div>
+              </div> 
+              <div  class="w100 rtl" style="display:inline-block ;margin-right: 16px;">
+                <div class="rtl ion-text-center" style=" width:20% ;text-align: center;padding: 8px; position: relative; float: right;">
                   <ion-label> قيمة الضريبة / VAT </ion-label>
                 </div>
                 <div class="rtl ion-text-center "  style="font-weight: bold;text-align: center;padding: 8px; position: relative; float: right;">
@@ -245,20 +260,24 @@
                   <ion-label> صافي المبلغ شامل الضريبة / total include VAT   </ion-label>
                 </div>
                 <div class="rtl ion-text-center "  style="font-weight: bold ;text-align: center;padding: 8px; position: relative; float: right;">
-                  <ion-label> {{+printArr[0].payInvo.tot_pr +  +printArr[0].payInvo.taxTot }}  </ion-label>
+                  <ion-label> {{+printArr[0].payInvo.tot_pr  - +printArr[0].payInvo.discountTot +  +printArr[0].payInvo.taxTot }}  </ion-label>
                 </div>
               </div> 
            </div>
            <!-- qr --> 
            
-        <div  *ngIf="printArr"> 
-          
-          <div style="display : block ; margin-left: auto ;margin-right: auto ; width:100px;height:100px"> 
-            <!-- <qrcode [qrdata]="printArr[0].qrcodedata" size="256" level="'M'"></qrcode> -->
-          </div>
-          </div>
+       
+
+        </div>  
+      </div>
+
+      <!-- oq -->
+      <!-- <div *ngIf="printArr" style="display : block ; margin-left: auto ;margin-right: auto ;width : 100% ;"> 
+        <img [src]="qrCodeDataUrl" style = "width : 150px ; height:150px ;" alt="QR Code" />
+      </div> -->
+      <!-- foooter -->
+      <div #printfooter id="printfooter">
            <div *ngIf="printArr" class="w100 rtl ion-margin"> 
-            
             <h6 class="ion-text-center"><ion-label>  Thank You For Visit    </ion-label> </h6>
             <h6 class="ion-text-center"><ion-label>    شكرا لزيارتكم  </ion-label> </h6>
           </div>
@@ -271,8 +290,8 @@
             <h6 class="ion-text-center"><ion-label>  الهاتف / phone  : {{printArr[0].company.phone - printArr[0].company.phone2 }}     </ion-label> </h6>
              
           </div>
-        </div>  
       </div>
+
   </div>  
 </ion-content>
 

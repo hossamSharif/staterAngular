@@ -11,11 +11,11 @@ import { StockServiceService } from '../syncService/stock-service.service';
 import { DomSanitizer } from '@angular/platform-browser'; 
 import { formatDate } from '@angular/common'; 
 @Component({
-  selector: 'app-pos-sales',
-  templateUrl: './pos-sales.page.html',
-  styleUrls: ['./pos-sales.page.scss'],
+  selector: 'app-edit-sales',
+  templateUrl: './edit-sales.page.html',
+  styleUrls: ['./edit-sales.page.scss'],
 })
-export class PosSalesPage implements OnInit {
+export class EditSalesPage implements OnInit {
   @ViewChild("dst") nameField: ElementRef;
   @ViewChild('dstPop') dstPop;
   @ViewChild('qtyId') qtyId; 
@@ -25,7 +25,6 @@ export class PosSalesPage implements OnInit {
   isOpen = false; 
   isOpenNotif = false ;
   newNotif = false ; 
-  
   sub_account:Array<any> =[]
   sub_accountLocalSales:Array<any> =[]
   sub_accountSales:Array<any> =[]
@@ -44,9 +43,9 @@ export class PosSalesPage implements OnInit {
   user_info : {id:any ,user_name:any ,store_id :any,full_name:any,password:any}
   sub_nameNew :any = ""
   discountPerc : any = 0
-  selectedItem : {id:any ,pay_ref:any,item_name:any,pay_price:any,perch_price:any,item_unit:any,item_desc:any,parcode:any,qty:any,tot:any ,dateCreated:any,availQty:any,aliasEn:any,tax:any , discount:any};
+  selectedItem : {id:any ,pay_ref:any,item_name:any,pay_price:any,perch_price:any,item_unit:any,item_desc:any,parcode:any,qty:any,tot:any ,dateCreated:any,availQty:any,aliasEn:any,tax:any , disc:any};
   selectedAccount : {id:any ,ac_id:any,sub_name:any,sub_type:any,sub_code:any,sub_balance:any,store_id:any ,cat_id:any,cat_name:any,phone:any,address:any,currentCustumerStatus:0};
-  payInvo : {pay_id:any ,pay_ref:any ,store_id:any,tot_pr:any,pay:any,pay_date:any,pay_time:any,user_id:any,cust_id:any,pay_method:any,discount:any ,changee:any, sub_name:any, payComment:any, nextPay:any, yearId:any , companyId:any, taxTot:any, backed:any , recived:any , discountTot :any};
+  payInvo : {pay_id:any ,pay_ref:any ,store_id:any,tot_pr:any,pay:any,pay_date:any,pay_time:any,user_id:any,cust_id:any,pay_method:any,discount:any ,changee:any,sub_name:any,payComment:any,nextPay:any, yearId:any , companyId:any,taxTot:any,backed:any , recived:any};
   company : { id: any , phone: any, phone2  :any, address :any, logoUrl:any,engName:any,arName:any ,tradNo:any , vatNo:any};
   NumberArray : Array<any> = [1,2,3,4,5,6,7,8,10]
   radioVal : any = 0
@@ -57,7 +56,7 @@ export class PosSalesPage implements OnInit {
   color :any ='dark'
   showMe = null
   cellIndex = null
-  
+
   status:any = 'new'
   searchLang :any = 0
   currentCustumerStatus :any
@@ -89,60 +88,40 @@ export class PosSalesPage implements OnInit {
  constructor(private menuCtrl :MenuController, private sanitizer : DomSanitizer,  private rout : Router ,private platform:Platform,private behavApi:StockServiceService ,private _location: Location, private route: ActivatedRoute,private renderer : Renderer2,private modalController: ModalController,private alertController: AlertController, private authenticationService: AuthServiceService,private storage: Storage,private loadingController:LoadingController, private datePipe:DatePipe,private api:ServicesService,private toast :ToastController) {
   console.log(this.status,' jjjjj')
   this.selectedAccount = {id:"" ,ac_id:"",sub_name:"",sub_type:"",sub_code:"",sub_balance:"",store_id:"",cat_name:"",cat_id:"",phone:"",address:"",currentCustumerStatus:0};
-  
+
+   
   this.route.queryParams.subscribe(params => {
-      if (params && params.payInvo) {
-        this.status = 'initial'
-        this.payInvo = JSON.parse(params.payInvo);
-      //  this.payInvo.yearId = this.year.id
-        if(this.payInvo.cust_id == null){
-          this.radioVal =  1
-          this.sub_nameNew = JSON.parse(params.sub_name)
-        }else{
-          this.selectedAccount.sub_name = JSON.parse(params.sub_name);
-        }
-        this.user_info = JSON.parse(params.user_info);
-        this.store_info = JSON.parse(params.store_info);
-        this.itemList = JSON.parse(params.itemList);
-        //console.log('lksjda',this.payInvo, this.store_info,  this.user_info ,this.itemList ,this.selectedAccount.sub_name )
-        this.discountPerc = ((+this.payInvo.discount /+this.payInvo.tot_pr) * 100 ).toFixed(2)
-        this.prepareOffline()
-        this.getAppInfoCase2()
-      } 
-    });
-    
-    this.printArr.push({
-      'payInvo': "",
-      'itemList':"",
-       'selectedAccount' :"",
-        'sub_nameNew' : "",
-         "userInfo" : "" ,
-         "sub_balanse": 0,
-         "balanceStatus": "",
-         "company": "" ,
-         "qrcodedata": "" 
-    })
-
-
-    this.selectedItem = {
-      id:undefined,
-      dateCreated:"",
-      pay_ref:"",
-      item_desc:"",
-      item_name:"",
-      item_unit:"",
-      parcode:0,
-      pay_price:0,
-      perch_price:0,
-      qty:0,
-      tot:0,
-      availQty:0,
-      aliasEn:"",
-      tax:0 ,
-      discount:0
+    if (params && params.payInvo) {
+      this.payInvo = JSON.parse(params.payInvo);
+      this.selectedAccount.sub_name = JSON.parse(params.sub_name);
+      this.user_info = JSON.parse(params.user_info);
+      this.store_info = JSON.parse(params.store_info);
+      this.itemList = JSON.parse(params.itemList);
+      console.log('lksjda',this.payInvo, this.store_info,  this.user_info ,this.itemList ,this.selectedAccount.sub_name )
+      this.discountPerc = ((+this.payInvo.discount /+this.payInvo.tot_pr) * 100 ).toFixed(2)
+      this.prepareOffline()
+      this.getAppInfo()
     }
-  }
-
+  });
+ 
+  this.selectedItem = {
+    id:undefined,
+    dateCreated:"",
+    pay_ref:"",
+    item_desc:"",
+    item_name:"",
+    item_unit:"",
+    parcode:0,
+    pay_price:0,
+    perch_price:0,
+    qty:0,
+    tot:0,
+    availQty:0,
+    aliasEn:"",
+    tax:0 ,
+    disc:0
+  } 
+ }
   checkPlatform(){
     if (this.platform.is('desktop')) { 
       this.device = 'desktop'
@@ -308,7 +287,7 @@ export class PosSalesPage implements OnInit {
         availQty:0,
         aliasEn:"",
         tax:0 ,
-        discount : 0
+        disc : 0
       }
      }else{
       this.searchTerm = "" 
@@ -616,7 +595,7 @@ export class PosSalesPage implements OnInit {
         // this.getItemLocalOff()
         // this.getAccountOffline()
         //this.getSalesAccount()
-        this.prepareInvo()
+       // this.prepareInvo()
       }
     }); 
    
@@ -788,16 +767,6 @@ export class PosSalesPage implements OnInit {
   }
 
    getSubBalance(){
-    // payTot' => $payTot ,
-    //      'tot_prTot' => $tot_prTot ,
-    //      'changeeTot' => $changeeTot ,
-    //      'purchPayTot' => $purchPayTot ,
-    //      'purchTot_prTot' => $purchTot_prTot ,
-    //      'purchChangeeTot' => $purchChangeeTot ,
-    // 'fromDebitTot' => $fromDebitTot ,
-    // 'fromCreditTot' => $fromCreditTot ,
-    //  'toDebitTot' => $toDebitTot ,
-    // 'toCreditTot' => $toCreditTot   
     this.sub_account.forEach(element => {
       element.sub_balance = 0
       let debitTot = +element.changeeTot + +element.fromDebitTot
@@ -844,7 +813,7 @@ export class PosSalesPage implements OnInit {
         this.sub_nameNew = ""
         this.radioVal = 0
         this.radioVal2 = 0
-        this.payInvo ={pay_id:undefined ,pay_ref:0 ,store_id:"",tot_pr:0,pay:0,pay_date:"",pay_time:"",user_id:"",cust_id:null,pay_method:"",discount:0 ,changee:0,sub_name:"",payComment:"",nextPay:null, yearId:this.year.id , companyId:this.company.id,recived:0,taxTot:0,backed:0, discountTot:0};
+        this.payInvo ={pay_id:undefined ,pay_ref:0 ,store_id:"",tot_pr:0,pay:0,pay_date:"",pay_time:"",user_id:"",cust_id:null,pay_method:"",discount:0 ,changee:0,sub_name:"",payComment:"",nextPay:null, yearId:this.year.id , companyId:this.company.id,recived:0,taxTot:0,backed:0};
         this.discountPerc = 0
         let d = new Date
       // this.payInvo.pay_date  = d.getMonth().toString() + "/"+ d.getDay().toString()+ "/"+ d.getFullYear().toString() 
@@ -855,10 +824,9 @@ export class PosSalesPage implements OnInit {
        this.payInvo.store_id =this.store_info.id
        this.payInvo.user_id = this.user_info.id
        this.payInvo.yearId = this.year.id
-         
        //console.log(this.payInvo) 
        this.itemList = []
-      // this.getAccountOffline()
+       this.getAccountOffline()
        console.log('payInvo prepare' , this.payInvo)
       // this.getSalesAccount()   
       // this.setFocusOnInput('dst')
@@ -880,7 +848,6 @@ export class PosSalesPage implements OnInit {
         this.items = res['data']
         this.items.forEach(element => {
           this.sanitizer.bypassSecurityTrustResourceUrl(element['imgUrl']);
-
         });
            console.log(this.items)
       }, (err) => {
@@ -1061,7 +1028,7 @@ this.selectedItem = {
   availQty:item.quantity,
   aliasEn:item.aliasEn ,
   tax:item.tax,
-  discount:0
+  disc:0
 } 
  this.searchTerm = item.item_name
   //console.log( this.selectedItem); 
@@ -1166,7 +1133,7 @@ pickDetail(ev){
     availQty:fl[0]['quantity'],
     aliasEn:fl[0]['aliasEn'],
     tax:fl[0]['tax'] ,
-    discount:fl[0]['disc'] 
+    disc:fl[0]['disc'] 
   }
   //console.log( this.selectedItem);
  // this.setFocusOnInput('qtyId')
@@ -1205,47 +1172,28 @@ qtyhange(ev){
 
 pricehange(ev){
   //console.log(ev);
-  let  discountPrice = +this.selectedItem.discount/100 * (+this.selectedItem.pay_price * this.selectedItem.qty)
-
-  this.selectedItem.tot =  (this.selectedItem.qty * (((+this.selectedItem.pay_price * this.selectedItem.qty) - discountPrice  ) + (+this.selectedItem.tax/100 * ((+this.selectedItem.pay_price * this.selectedItem.qty) - discountPrice) ))).toFixed(2)
- 
+  this.selectedItem.tot =  (this.selectedItem.qty * +this.selectedItem.pay_price).toFixed(2)
 }
 
 getTotal(){
-  let sum = this.itemList.reduce( (acc, obj)=> { return acc + (+obj.quantity * +obj.pay_price ); }, 0);
-//   let sum = 0
-//  for (let I = 0; I < this.itemList.length; I++) {
-//   const element = this.itemList[I];
-//   let d = +element.pay_price - +element.discount
-//   let descPrice = +element.quantity * +d
-//   sum = sum + descPrice
-//   console.log('sum', sum ,   descPrice ) 
-//  }
-  
- this.payInvo.taxTot = this.itemList.reduce((acc, obj)=> { return acc + +obj.tax ; }, 0);
- this.payInvo.discountTot = this.itemList.reduce((acc, obj)=> { return acc + +obj.discount ; }, 0);
- this.payInvo.discountTot = this.payInvo.discountTot.toFixed(2)
-  // let taxtot  = 0
-  // for (let I = 0; I < this.itemList.length; I++) {
-  //   const element = this.itemList[I];
-  //   let tot = +element.quantity * (( +element.pay_price - (element.pay_price * element.discount/100)) * +element.tax/100)
-  //   taxtot = taxtot + tot
-  //  }
-  //  this.payInvo.taxTot = taxtot
-
-
+  let sum = this.itemList.reduce( (acc, obj)=> { return acc + (+obj.quantity * +obj.pay_price); }, 0);
+ // let sum = this.itemList.reduce( (acc, obj)=> { return acc + +(+obj.quntity * +obj.pay_price); }, 0);
+  this.payInvo.taxTot = this.itemList.reduce((acc, obj)=> { return acc + (( +obj.quantity * (+obj.pay_price * (+obj.tax/100)))); }, 0);
+  this.payInvo.taxTot = this.payInvo.taxTot.toFixed(2)
  //  this.taxTot = this.itemList.reduce( (acc, obj)=> { return acc + (+obj.pay_price * (+obj.tax/100)); }, 0);
   console.log('sum', sum)
-  this.payInvo.taxTot =this.payInvo.taxTot.toFixed(2)
+  
   //
-  this.payInvo.tot_pr = +sum -  +this.payInvo.discount
+  this.payInvo.tot_pr = +sum - +this.payInvo.discount
 
-  this.taxAll =  (+this.payInvo.tot_pr -  this.payInvo.discountTot  + +this.payInvo.taxTot).toFixed(2)
+  this.taxAll = this.payInvo.tot_pr + +this.payInvo.taxTot
   
   this.payInvo.pay = +this.taxAll
 
   this.payInvo.changee = +this.taxAll - +this.payInvo.pay
   
+  
+
   this.payInvo.tot_pr = this.payInvo.tot_pr.toFixed(2)
 
   this.payInvo.changee = this.payInvo.changee.toFixed(2)
@@ -1317,10 +1265,12 @@ addTolist() {
       let fl: any = []
       if (this.itemList.length > 0) {
         fl = this.itemList.filter(x => x.item_name == this.selectedItem.item_name &&  x.pay_price == this.selectedItem.pay_price)
-      } 
+      }
+
       if (fl.length == 0) {
         let d =   new Date
-        let r= this.datePipe.transform(d, 'dd-MM-YYYY') 
+        let r= this.datePipe.transform(d, 'dd-MM-YYYY')
+  
         this.itemList.push({
         "id" : 'NULL',
         "pay_ref" :this.selectedItem.pay_ref,
@@ -1334,13 +1284,14 @@ addTolist() {
         "dateCreated" : r,
         "perch_price":this.selectedItem.perch_price ,
         "tax":this.selectedItem.tax ,
-        "discount":this.selectedItem.discount 
+        "disc":this.selectedItem.disc 
 
         })
       } else {
         //console.log(this.itemList);
         //console.log(fl[0].quantity);
-        //console.log(+this.selectedItem.qty); 
+        //console.log(+this.selectedItem.qty);
+
         this.selectedItem.qty = +fl[0].quantity + +this.selectedItem.qty
         let index = this.itemList.map(e => e.item_name).indexOf(this.selectedItem.item_name);
         this.itemList[index].quantity = +this.selectedItem.qty
@@ -1364,7 +1315,7 @@ addTolist() {
         availQty:0,
         aliasEn:"",
         tax:0 ,
-        discount : 0
+        disc : 0
       }
       this.discountPerc = 0
       this.payInvo.discount = 0 
@@ -1377,8 +1328,6 @@ addTolist() {
   addTolistClick(item) {
     this.selectedItem = item
     console.log(item)
-    
-   // ((+item.pay_price - +discountPrice) + (item.tax/100 * (+item.pay_price - +discountPrice))).toFixed(2)
     this.selectedItem = {
       id: item.id,
       dateCreated: "", 
@@ -1390,11 +1339,12 @@ addTolist() {
       pay_price: item.pay_price,
       perch_price: item.item_name,
       qty: 1,
-      tot : item.tot  ,
+      tot: +item.pay_price + (+item.tax/100 *  +item.pay_price)  ,
       availQty:0,
       aliasEn:+item.aliasEn ,
       tax:item.tax ,
-      discount:item.discount   
+      disc:item.disc  
+
     }
 
     // if (this.selectedItem.item_name == "" || this.selectedItem.id == "" || +this.selectedItem.qty == 0 ) {
@@ -1405,31 +1355,24 @@ addTolist() {
         fl = this.itemList.filter(x => x.item_name == this.selectedItem.item_name &&  x.pay_price == this.selectedItem.pay_price)
       }
 
-    
-
       if (fl.length == 0) {
-        let  discountPrice = (+this.selectedItem.discount/100 *  +this.selectedItem.pay_price ).toFixed(2) 
-        let tax = (+this.selectedItem.tax/100 * (+this.selectedItem.pay_price - +discountPrice)).toFixed(2)
-        let tot = +this.selectedItem.pay_price - + discountPrice + +tax
-
         let d =   new Date
         let r= this.datePipe.transform(d, 'dd-MM-YYYY')
          this.selectedItem.qty = 1
-
         this.itemList.push({
         "id" : 'NULL',
         "pay_ref" :this.selectedItem.pay_ref,
         "item_name" :this.selectedItem.item_name,
         "pay_price" :this.selectedItem.pay_price,
         "quantity" : +this.selectedItem.qty,
-        "tot" : tot.toFixed(2),
+        "tot" :this.selectedItem.tot, 
         "store_id" :+this.store_info.id, 
         "yearId" :+this.year.id, 
         "item_id" : +this.selectedItem.id,
         "dateCreated" : r,
         "perch_price":this.selectedItem.perch_price,
-        "tax":tax ,
-        "discount": +discountPrice 
+        "tax":this.selectedItem.tax ,
+        "disc":this.selectedItem.disc
         })
       } else {
         //console.log(this.itemList);
@@ -1439,22 +1382,10 @@ addTolist() {
         this.selectedItem.qty = +fl[0].quantity + +this.selectedItem.qty
         let index = this.itemList.map(e => e.item_name).indexOf(this.selectedItem.item_name);
         this.itemList[index].quantity = +this.selectedItem.qty
-        //اجمالي التخفيض 
-        let  discountPrice = ((+this.selectedItem.pay_price * +this.selectedItem.qty) * +this.selectedItem.discount/100 ).toFixed(2) 
+        this.itemList[index].tot =  (this.selectedItem.qty * (+this.selectedItem.pay_price + (+this.selectedItem.tax/100 * +this.selectedItem.pay_price))).toFixed(2)
+       
+       // this.itemList[index].tot.toFixed(2)
         
-        // إجمالي الضريبة
-        let tax = (((+this.selectedItem.pay_price  * +this.selectedItem.qty) - +discountPrice) * this.selectedItem.tax/100 ).toFixed(2)
-
-         // إجمالي شامل الضريبة والتخفيض 
-        let tot = ((+this.selectedItem.pay_price * +this.selectedItem.qty) - + discountPrice + +tax).toFixed(2)
-
-
-
-       // let  discountPrice = +this.selectedItem.discount/100 * (+this.selectedItem.pay_price * this.selectedItem.qty)
-        this.itemList[index].discount = discountPrice 
-        this.itemList[index].tot = tot 
-        this.itemList[index].tax = tax
-        //  this.itemList[index].tot =  (this.selectedItem.qty * (((+this.selectedItem.pay_price * this.selectedItem.qty) - discountPrice  ) + (+this.selectedItem.tax/100 * ((+this.selectedItem.pay_price * this.selectedItem.qty) - discountPrice) ))).toFixed(2)
       }
 
       this.selectedItem = {
@@ -1472,7 +1403,7 @@ addTolist() {
         availQty:0,
         aliasEn:"",
         tax:0 ,
-        discount:0 
+        disc:0 
       }
       this.discountPerc = 0
       this.payInvo.discount = 0 
@@ -1524,28 +1455,8 @@ addTolist() {
       if(qt){
         this.itemList[cellindex].quantity = qt
       }
-      let fl :any =[]
-      fl = this.items.filter(x => x.id == +this.itemList[cellindex].item_id)
-
-
-       console.log(fl[0] );
-      let  discountPrice = ((+fl[0].pay_price * +this.itemList[cellindex].quantity) * fl[0].discount/100 ).toFixed(2) 
-        
-      // إجمالي الضريبة
-      let tax = (((fl[0].pay_price  * +this.itemList[cellindex].quantity) - +discountPrice) * fl[0].tax/100 ).toFixed(2)
-
-       // إجمالي شامل الضريبة والتخفيض 
-      let tot = ((this.itemList[cellindex].pay_price * this.itemList[cellindex].quantity) - + discountPrice + +tax).toFixed(2)
-
-
-
-     // let  discountPrice = +this.selectedItem.discount/100 * (+this.selectedItem.pay_price * this.selectedItem.qty)
-     this.itemList[cellindex].discount = discountPrice 
-     this.itemList[cellindex].tot = tot 
-     this.itemList[cellindex].tax = tax
-
-      // this.itemList[cellindex].tot = +this.itemList[cellindex].quantity * (+this.itemList[cellindex].pay_price + (+this.itemList[cellindex].pay_price * +this.itemList[cellindex].tax/100))
-      // this.itemList[cellindex].tot = this.itemList[cellindex].tot.toFixed(2)
+      this.itemList[cellindex].tot = +this.itemList[cellindex].quantity * (+this.itemList[cellindex].pay_price + (+this.itemList[cellindex].pay_price * +this.itemList[cellindex].tax/100))
+      this.itemList[cellindex].tot = this.itemList[cellindex].tot.toFixed(2)
       this.discountPerc = 0
       this.payInvo.discount = 0
       this.didDissmisQtPop()
@@ -1690,7 +1601,35 @@ deleteSalesitemListInit(){
       this.presentLoadingWithOptions('جاري حفظ البيانات ...')
       console.log(this.payInvo)
       this.prepareQrcode2()
-      this.saveInvo() 
+      // initial invoice
+      // حساب محفوظ اوننلاين وموجود في قائمة العملاء
+      if (this.radioVal == 0 && this.selectedAccount.id != null) {
+        if (this.offline == true) {
+          this.saveInvoLocal()
+        } else {
+          this.saveInvo()
+        }
+      }
+      // حساب محفوظ محلي وموجود في قائمة العملاء
+      else if (this.radioVal == 0 && this.selectedAccount.id == null && this.selectedAccount.sub_name != "") {
+        if (this.offline == true) {
+          this.saveInvoLocal()
+        } else {
+          this.saveSubAccount()
+        }
+      }
+
+      
+      //حساب جديد
+      else if (this.radioVal == 1) {
+        //console.log(this.radioVal, 'saveSubAccountlocal()')
+        if (this.offline == true) {
+          //console.log('saveSubAccountlocal()')
+          this.saveSubAccountlocal()
+        } else {
+          this.saveSubAccount()
+        } 
+      }
     }
   }
 
@@ -1952,11 +1891,9 @@ if (!this.sub_account) {
   saveInvo() {
     console.log('saveInvo')
     this.api.saveSalesInvo(this.payInvo).subscribe(data => {
-      console.log('save',data)
-     if(data['message'] != 'Post Not Created') {
-      this.payInvo.pay_id = data['message']
+      //console.log(data)
+     
       this.saveitemList()
-      }
     }, (err) => {
       //console.log(err);
       this.presentToast('لم يتم حفظ البيانات , خطا في الإتصال حاول مرة اخري', 'danger')
@@ -2032,7 +1969,7 @@ if (!this.sub_account) {
 async saveitemList(){  
   this.api.saveSalesitemList(this.itemList).subscribe(data=>{ 
     //console.log(data) 
-    //  this.recalSubBalance()
+     this.recalSubBalance()
       
     //console.log(this.selectedAccount.currentCustumerStatus) 
     this.printArr = []
@@ -2052,19 +1989,37 @@ async saveitemList(){
     //console.log('printinggg',this.printArr)
     this.sales = this.sales.filter(item => item.payInvo.pay_ref != this.payInvo.pay_ref);
     //console.log(' case ffff ' ,this.sales)
- 
+
+    this.sales.push({
+     "payInvo": this.payInvo,
+     "itemList": this.itemList 
+    }) 
   let arr:Array<any> = []
   arr.push({
     "payInvo": this.payInvo,
     "itemList": this.itemList 
   })
-    
+    this.logHistoryArr.push(
+      {
+        "id":null,
+        "logRef":this.generateRandom2('insert sales'),
+        "userId":this.user_info.id,
+        "typee":'insert sales',
+        "datee": "", //momentObj(new Date()).locale('en').format('YYYY-MM-DD HH:mm:ss'),
+        "logStatus":0,
+        "logToken":JSON.stringify(arr[0]),
+        "yearId":this.year.id,
+        "store_id":this.store_info.id
+      }
+      )
 
       // this.storage.set('sales', this.sales).then((response) => {
       // //console.log('sales', response) 
       // })
 
-      
+      if (this.status == 'toFinal') {
+        this.deleteSalesInvoInit()
+      }
    
     // //console.log(this.printArr)
     // if(this.initialInvoices.length > 0){ 
@@ -2077,7 +2032,7 @@ async saveitemList(){
     this.presentToast('تم الحفظ بنجاح', 'success')
     this.prepareInvo()
      
-   // this.performSync()    
+  this.performSync()    
   }, (err) => {
     //console.log(err);
     this.presentToast('لم يتم حفظ البيانات , خطا في الإتصال حاول مرة اخري' , 'danger')
@@ -2136,9 +2091,9 @@ if (dateTimeLengthHex.length == 1) {
 const dateTimeInitial = dateTimeTag + dateTimeLengthHex + dateTimeHex
 console.log("dateTime" ,dateTimeHex ,dateTimeLengthHex , dateTimeInitial)
 
-const totalHex = this.stringToHex((+this.taxAll).toString());
+const totalHex = this.stringToHex((this.taxAll.toFixed(2)).toString());
 const totalTag = "04"
-let totalLengthHex = this.toHex(((+this.taxAll).toString().length));
+let totalLengthHex = this.toHex(((this.taxAll.toFixed(2)).toString().length));
 if (totalLengthHex.length == 1) {
   totalLengthHex = "0" + totalLengthHex; 
 }
@@ -2236,20 +2191,18 @@ prepareQrcode2(){
   
    
   const totalTag = "04"
-  console.log('taxAll',typeof(this.taxAll), this.taxAll)
-
-  let totalLengthHex = this.toHexTagAndLenght(((this.taxAll).length));
+  let totalLengthHex = this.toHexTagAndLenght(((this.taxAll.toFixed(2)).length));
   if (totalLengthHex.length == 1) {
     totalLengthHex = "0" + totalLengthHex; 
   }
-  const totalIntial = this.stringToHexAscii(totalTag) + this.stringToHexAscii(totalLengthHex) + this.taxAll.toString()
+  const totalIntial = this.stringToHexAscii(totalTag) + this.stringToHexAscii(totalLengthHex) + this.taxAll.toFixed(2).toString()
   console.log("totalengthhex : " + totalLengthHex  ,"totAlengthhexAscii : " + this.stringToHexAscii(totalLengthHex) ,'tagAscii : '+ this.stringToHexAscii(totalTag))
  
   
-  console.log('totax',typeof(this.payInvo.taxTot) , this.payInvo.taxTot)
+  console.log('totax',(this.payInvo.taxTot))
    
   const taxTag = "05"
-  let taxLengthHex = this.toHexTagAndLenght(((this.payInvo.taxTot.toString()).length));
+  let taxLengthHex = this.toHexTagAndLenght(((this.payInvo.taxTot).length));
   if (taxLengthHex.length == 1) {
     taxLengthHex = "0" + taxLengthHex; 
   }
